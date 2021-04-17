@@ -4,7 +4,10 @@ from PyQt5.QtGui import *
 from PyQt5.QAxContainer import *
 import platform
 
-class MyWindow(QMainWindow):
+from kiwoom_api import *
+
+
+class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Chicken run")
@@ -12,6 +15,9 @@ class MyWindow(QMainWindow):
 
         #현재 실행중인 환경의 비트수 
         print(platform.architecture())
+
+        self.kiwoom = Kiwoom_api()
+        """
         #키움 api와 연결 
         self.kiwoom = QAxWidget("KHOPENAPI.KHOpenAPICtrl.1")
         #키움 api 로그인 실행
@@ -25,16 +31,9 @@ class MyWindow(QMainWindow):
         btn2 = QPushButton("Check", self)
         btn2.move(20, 70)
         btn2.clicked.connect(self.btn2_clicked)
+        """
 
-    def receive_trdata(self, screen_no, rqname, trcode, recordname, prev_next, data_len, err_code, msg1, msg2):
-        if rqname == "opt10001_req":
-            name = self.kiwoom.dynamicCall("CommGetData(QString, QString, QString, int, QString)", trcode, "", rqname, 0, "종목명")
-            volume = self.kiwoom.dynamicCall("CommGetData(QString, QString, QString, int, QString)", trcode, "", rqname, 0, "거래량")
-
-            print(name.strip())
-            print(volume.strip())
-            #self.text_edit.append("종목명: " + name.strip())
-            #self.text_edit.append("거래량: " + volume.strip())
+   
 
 
     def btn2_clicked(self):
@@ -58,11 +57,12 @@ class MyWindow(QMainWindow):
         #self.statusBar().showMessage(total_message + str(last_massage))
 
 
-
+    
+    
 
 if __name__ == "__main__":
 
     app = QApplication(sys.argv)
-    myWindow = MyWindow()
-    myWindow.show()
+    mainWindow = MainWindow()
+    mainWindow.show()
     app.exec_()
