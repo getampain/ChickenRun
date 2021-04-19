@@ -17,7 +17,13 @@ class MainWindow(QMainWindow):
         print(platform.architecture())
 
         self.kiwoom = Kiwoom_api()
+
+
+        btn2 = QPushButton("Check", self)
+        btn2.move(20, 70)
+        btn2.clicked.connect(self.btn_first_my_function)
         """
+        btn2.clicked.connect(self.btn2_clicked)
         #키움 api와 연결 
         self.kiwoom = QAxWidget("KHOPENAPI.KHOpenAPICtrl.1")
         #키움 api 로그인 실행
@@ -33,7 +39,12 @@ class MainWindow(QMainWindow):
         btn2.clicked.connect(self.btn2_clicked)
         """
 
-   
+    def btn_first_my_function(self):
+        
+        self.kiwoom.set_input_value("종목코드", "005930")
+        self.kiwoom.set_input_value("조회일자", "20210419")
+        self.kiwoom.set_input_value("표시구분", "1")
+        self.kiwoom.send_trdata("opt10086_req", "opt10086", "0", "0101")
 
 
     def btn2_clicked(self):
