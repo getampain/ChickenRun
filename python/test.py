@@ -7,8 +7,13 @@ import os.path
 print(os.path.realpath(__file__)+"!@#!@#!@")
 
 
-with open('./config/req_data.json') as json_file:
+with open('./config/req_data.json', encoding='UTF8') as json_file:
     json_data = json.load(json_file)
+
+    json_string = json_data["req_list"]
+    print("*"*10)
+    print(json_string["opt10001_req"])
+    print(json_string)
 
     # 문자열
     # key가 json_string인 문자열 가져오기
