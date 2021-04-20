@@ -52,7 +52,7 @@ class Kiwoom_api(QAxWidget):
             data = self.kiwoom.dynamicCall("CommGetData(QString, QString, QString, int, QString)", tr_code, "", tr_name, 0, "거래량")
             returnList.append(data.strip())
 
-            print(returnList)
+            print(returnList) 
 
     """
         해당 파트를 정의해서 범용으로 값을 보낼 수 있도록 해야한다.

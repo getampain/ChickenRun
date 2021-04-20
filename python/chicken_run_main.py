@@ -40,8 +40,9 @@ class MainWindow(QMainWindow):
         """
 
     def btn_first_my_function(self):
+        #005930
         
-        self.kiwoom.set_input_value("종목코드", "005930")
+        self.kiwoom.set_input_value("종목코드", "034730")
         self.kiwoom.set_input_value("조회일자", "20210419")
         self.kiwoom.set_input_value("표시구분", "1")
         self.kiwoom.send_trdata("opt10086_req", "opt10086", "0", "0101")
