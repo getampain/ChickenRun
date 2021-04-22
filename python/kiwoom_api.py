@@ -63,3 +63,16 @@ class Kiwoom_api(QAxWidget):
     def set_input_value(self, value_name, value):
         self.kiwoom.dynamicCall("SetInputValue(QString, QString)", value_name, value)
 
+    #자신의 계좌 상태를 확인하기 위한 함수
+    def get_my_account(self):
+
+        self.set_input_value("계좌번호", "")
+
+        """
+            이름,
+            코드,
+            연속조회여부,
+            화면번호
+        """
+        self.kiwoom.send_trdata("opt10085_req", "opt10085", "0", "0101")
+

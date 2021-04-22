@@ -7,74 +7,66 @@ import platform
 from kiwoom_api import *
 
 
-class MainWindow(QMainWindow):
+class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Chicken run")
-        self.setGeometry(300, 300, 300, 150)
+        
 
         #현재 실행중인 환경의 비트수 
         print(platform.architecture())
-
         self.kiwoom = Kiwoom_api()
 
-
-        btn2 = QPushButton("Check", self)
-        btn2.move(20, 70)
-        btn2.clicked.connect(self.btn_first_my_function)
-        """
-        btn2.clicked.connect(self.btn2_clicked)
-        #키움 api와 연결 
-        self.kiwoom = QAxWidget("KHOPENAPI.KHOpenAPICtrl.1")
-        #키움 api 로그인 실행
-        self.kiwoom.dynamicCall("CommConnect()")
-
-
-        #self.kiwoom.OnEventConnect.connect(self.event_connect)
-        #tran이후 데이터를 받아오는 파트
-        self.kiwoom.OnReceiveTrData.connect(self.receive_trdata)
+        #계좌상태를 보여주기 위한 택스트 박스 추가
+        self.account_text = QTextEdit()
+        self.account_text.setAcceptRichText(False)
+        self.account_text.setReadOnly(True)
     
-        btn2 = QPushButton("Check", self)
-        btn2.move(20, 70)
-        btn2.clicked.connect(self.btn2_clicked)
+        #칰런 시작버튼
+        self.btn_run = QPushButton("Run!", self)
+        self.btn_run.clicked.connect(self.btn_run_chickenrun)
+
+        #메인 박스
+        vbox = QVBoxLayout()
+        vbox.addWidget(self.account_text)
+        vbox.addWidget(self.btn_run)
+        vbox.addStretch()
+
+        #사이즈 세팅
+        self.setLayout(vbox)
+        self.setWindowTitle("Chicken run")
+        self.setGeometry(300, 300, 300, 250)
+
+    def btn_run_chickenrun(self):
         """
+            데이터 수집?
+            작업?
+            연결등의 작업을 진행해준다.
+        """
+        self.check_my_account()
+        self.btn_first_my_function()
 
     def btn_first_my_function(self):
         #005930
-        
         self.kiwoom.set_input_value("종목코드", "034730")
         self.kiwoom.set_input_value("조회일자", "20210419")
         self.kiwoom.set_input_value("표시구분", "1")
         self.kiwoom.send_trdata("opt10086_req", "opt10086", "0", "0101")
-
-
-    def btn2_clicked(self):
-        total_message = ""
-        if self.kiwoom.dynamicCall("GetConnectState()") == 0:
-            total_message += "Not connected\n"
-        else:
-            total_message += "connected\n"
-
-
-        #self.kiwoom.SetInputValue("종목코드", "005930")
-        #self.kiwoom.CommRqData("OPT10001", "OPT10001", 0, "0101")
-
-        self.kiwoom.dynamicCall("SetInputValue(QString, QString)", "종목코드", "005930")
-        hello = self.kiwoom.dynamicCall("CommRqData(QString, QString, int, QString)", "opt10001_req", "opt10001", 0, "0101")
-        print(hello) 
-
-
-        #last_massage = self.kiwoom.dynamicCall('GetCommRealData(QString, QString)', "005930", 10)
-        #print(last_massage)
-        #self.statusBar().showMessage(total_message + str(last_massage))
-
-
     
-    
+    def check_my_account(self):
+        print("hello...")
+
+    #config항목을 어떻게할까 예민한 데이터도 존재한다.... git ignore 예상
+
+    #값을 바인딩해버리자 타이머같은걸로 계속 리셋하는게 어떨까?
+    #이벤트 연결안하고 그냥불러와도 값이 읽히는거같은대...?
+    #
+
+
 
 if __name__ == "__main__":
 
     app = QApplication(sys.argv)
     mainWindow = MainWindow()
     mainWindow.show()
-    app.exec_()
+
+    sys.exit(app.exec_())
