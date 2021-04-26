@@ -51,6 +51,11 @@ class MainWindow(QWidget):
         self.kiwoom.set_input_value("조회일자", "20210419")
         self.kiwoom.set_input_value("표시구분", "1")
         self.kiwoom.send_trdata("opt10086_req", "opt10086", "0", "0101")
+
+        self.kiwoom.event_loop.exec_()
+
+        hello_world = self.kiwoom.received_data
+        print(hello_world)
     
     def check_my_account(self):
         print("hello...")

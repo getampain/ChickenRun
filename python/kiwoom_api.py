@@ -1,4 +1,5 @@
 from PyQt5.QAxContainer import *
+from PyQt5.QtCore import *
 import json
 
 class Kiwoom_api(QAxWidget):
@@ -7,9 +8,12 @@ class Kiwoom_api(QAxWidget):
         super().__init__()
         self.api_connnect()
         self.json_reader()
+        self.received_data = {}
 
         #tran의 결과값, event를 받아오는 파트
         self.kiwoom.OnReceiveTrData.connect(self.receive_trdata)
+        self.event_loop = QEventLoop()
+
     
     #데이터 형식
     def json_reader(self):
@@ -41,11 +45,17 @@ class Kiwoom_api(QAxWidget):
                 return_dictionary[data] = temp_value.strip()
 
             #none tpye check
-            print(return_dictionary)
+            #print(return_dictionary)
+            self.received_data = return_dictionary
+            self.event_loop.exit()
+
 
         except Exception as e:
             error_json = {"result" : "JSON LIST가 없습니다."}
             print('list 없는 항목의 응답값입니다.', error_json)
+            self.received_data = data
+            self.event_loop.exit()
+
 
 
     """
