@@ -45,17 +45,12 @@ class MainWindow(QWidget):
         self.check_my_account()
         self.btn_first_my_function()
 
+    #예시 데이터 출력 함수
+    #해당 함수를 참조해서 하면 될거같다
     def btn_first_my_function(self):
-        #005930
-        self.kiwoom.set_input_value("종목코드", "034730")
-        self.kiwoom.set_input_value("조회일자", "20210419")
-        self.kiwoom.set_input_value("표시구분", "1")
-        self.kiwoom.send_trdata("opt10086_req", "opt10086", "0", "0101")
-
-        self.kiwoom.event_loop.exec_()
-
-        hello_world = self.kiwoom.received_data
-        print(hello_world)
+        self.kiwoom.get_cop_info("034730", "20210419")
+        result_text = self.kiwoom.received_data
+        self.account_text.setPlainText(str(result_text))
     
     def check_my_account(self):
         print("hello...")
@@ -69,9 +64,7 @@ class MainWindow(QWidget):
 
 
 if __name__ == "__main__":
-
     app = QApplication(sys.argv)
     mainWindow = MainWindow()
     mainWindow.show()
-
     sys.exit(app.exec_())

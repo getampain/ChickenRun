@@ -86,3 +86,12 @@ class Kiwoom_api(QAxWidget):
         """
         self.kiwoom.send_trdata("opt10085_req", "opt10085", "0", "0101")
 
+    #종목 코드, 일자를 통해 정보를 받아오는 함수
+    def get_cop_info(self, cop_code, date_string):
+
+        self.set_input_value("종목코드", cop_code)
+        self.set_input_value("조회일자", date_string)
+        self.set_input_value("표시구분", "1")
+        self.send_trdata("opt10086_req", "opt10086", "0", "0101")
+        self.event_loop.exec_()
+
