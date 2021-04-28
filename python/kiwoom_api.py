@@ -8,7 +8,8 @@ class Kiwoom_api(QAxWidget):
         super().__init__()
         self.api_connnect()
         self.json_reader()
-        self.received_data = {}
+        self.received_data = []
+        self.before_tr_name = ""
 
         #tran의 결과값, event를 받아오는 파트
         self.kiwoom.OnReceiveTrData.connect(self.receive_trdata)
@@ -37,6 +38,12 @@ class Kiwoom_api(QAxWidget):
     def receive_trdata(self, screen_no, tr_name, tr_code, recordname, prev_next, data_len, err_code, msg1, msg2):
         try:
             data_list = self.req_list["req_list"][tr_name]["list"]
+            #첫번째 tr시작을 판단하기 위한 변수
+            #첫번째 시작인경우 값을 비우고 채울준비를 한다.
+            if tr_name != self.before_tr_name:
+                self.before_tr_name = tr_name
+                self.received_data = []
+
 
             return_dictionary = {}
             for data in data_list:
@@ -46,8 +53,15 @@ class Kiwoom_api(QAxWidget):
 
             #none tpye check
             #print(return_dictionary)
-            self.received_data = return_dictionary
+            self.received_data.append(return_dictionary)
+
+            print("hello " + str(prev_next) + " : " + str(return_dictionary))
             self.event_loop.exit()
+
+            if prev_next != "0":
+                self.send_trdata(tr_name, tr_code, prev_next, "0101")
+
+
 
 
         except Exception as e:
@@ -67,7 +81,7 @@ class Kiwoom_api(QAxWidget):
     """
     #tran의 데이터를 보내주는 함수
     def send_trdata(self, tr_name, tr_code, prev_next, screen_num):
-        self.kiwoom.dynamicCall("CommRqData(QString, QString, int, QString)", tr_name, tr_code, 0, screen_num)
+        self.kiwoom.dynamicCall("CommRqData(QString, QString, int, QString)", tr_name, tr_code, int(prev_next), screen_num)
 
     #tran의 값을 입력하기 위한 함수
     def set_input_value(self, value_name, value):
@@ -76,7 +90,9 @@ class Kiwoom_api(QAxWidget):
     #자신의 계좌 상태를 확인하기 위한 함수
     def get_my_account(self):
 
-        self.set_input_value("계좌번호", "")
+        #self.set_input_value("계좌번호", "")
+        #opt10085 계좌 수익률
+        print(12345)
 
         """
             이름,
@@ -84,7 +100,7 @@ class Kiwoom_api(QAxWidget):
             연속조회여부,
             화면번호
         """
-        self.kiwoom.send_trdata("opt10085_req", "opt10085", "0", "0101")
+        #self.kiwoom.send_trdata("opt10085_req", "opt10085", "0", "0101")
 
     #종목 코드, 일자를 통해 정보를 받아오는 함수
     def get_cop_info(self, cop_code, date_string):
