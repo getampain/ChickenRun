@@ -46,9 +46,14 @@ class MainWindow(QWidget):
         self.btn_first_my_function()
 
     #예시 데이터 출력 함수
-    #해당 함수를 참조해서 하면 될거같다
+    #해당 함수를 참조해서 하면 될거같다.
     def btn_first_my_function(self):
-        self.kiwoom.get_cop_info("034730", "20210419")
+        #get_cop_info 처럼 무제한으로 있는경우 되게 애매해서 스스로 끊는점이 있을 수 있다.
+        #self.kiwoom.get_cop_info("034730", "20210419", 0)
+        self.kiwoom.get_test_multi()
+
+        #루프가 종료 될경우 화면을 출력해준다.
+        self.kiwoom.event_loop.exec_()
         result_text = self.kiwoom.received_data
         self.account_text.setPlainText(str(result_text))
     
